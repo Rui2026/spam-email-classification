@@ -1,0 +1,20 @@
+{
+  "ml_logistic_regression_tfidf": {
+    "test_accuracy": 0.625,
+    "test_precision": 0.6,
+    "test_recall": 0.75,
+    "test_f1": 0.6666666666666666
+  },
+  "ml_knn_tfidf": {
+    "test_accuracy": 0.75,
+    "test_precision": 1.0,
+    "test_recall": 0.5,
+    "test_f1": 0.6666666666666666
+  },
+  "ml_naive_bayes_tfidf": {
+    "test_accuracy": 0.875,
+    "test_precision": 1.0,
+    "test_recall": 0.75,
+    "test_f1": 0.8571428571428571
+  }
+}

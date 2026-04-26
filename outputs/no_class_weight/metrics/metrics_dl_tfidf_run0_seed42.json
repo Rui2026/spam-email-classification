@@ -1,0 +1,14 @@
+{
+  "mlp_tfidf": {
+    "test_accuracy": 0.9748062015503876,
+    "test_precision": 0.925,
+    "test_recall": 0.8671875,
+    "test_f1": 0.8951612903225806
+  },
+  "lstm": {
+    "test_accuracy": 0.9622093023255814,
+    "test_precision": 0.9494949494949495,
+    "test_recall": 0.734375,
+    "test_f1": 0.8281938325991189
+  }
+}

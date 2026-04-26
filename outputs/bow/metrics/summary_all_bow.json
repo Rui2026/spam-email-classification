@@ -1,0 +1,65 @@
+{
+  "runs": 3,
+  "rows": [
+    {
+      "model": "ml_logistic_regression_bow",
+      "n_runs": 3,
+      "accuracy_mean": 0.9793281653746769,
+      "accuracy_std": 0.0009135746526957994,
+      "precision_mean": 0.9396875476162734,
+      "precision_std": 0.006706675563506381,
+      "recall_mean": 0.890625,
+      "recall_std": 0.01275775907699572,
+      "f1_mean": 0.9144013421086591,
+      "f1_std": 0.004446346107621562
+    },
+    {
+      "model": "ml_knn_bow",
+      "n_runs": 3,
+      "accuracy_mean": 0.9644702842377262,
+      "accuracy_std": 0.00691244656299502,
+      "precision_mean": 0.959178004686222,
+      "precision_std": 0.01027331516603616,
+      "recall_mean": 0.7447916666666666,
+      "recall_std": 0.049547649975105336,
+      "f1_mean": 0.8378582838157307,
+      "f1_std": 0.03491754603895673
+    },
+    {
+      "model": "ml_naive_bayes_bow",
+      "n_runs": 3,
+      "accuracy_mean": 0.9777131782945737,
+      "accuracy_std": 0.004940910381388366,
+      "precision_mean": 0.9340108401084012,
+      "precision_std": 0.02310606040083762,
+      "recall_mean": 0.8828125,
+      "recall_std": 0.019136638615493577,
+      "f1_mean": 0.9076596838452641,
+      "f1_std": 0.020410330659404483
+    },
+    {
+      "model": "mlp_bow",
+      "n_runs": 3,
+      "accuracy_mean": 0.9706072351421189,
+      "accuracy_std": 0.004768999696457782,
+      "precision_mean": 0.8687115472561834,
+      "precision_std": 0.04460907515282129,
+      "recall_mean": 0.9036458333333334,
+      "recall_std": 0.024150048165353395,
+      "f1_mean": 0.8845681846866079,
+      "f1_std": 0.014830366061636317
+    },
+    {
+      "model": "lstm",
+      "n_runs": 3,
+      "accuracy_mean": 0.9602713178294574,
+      "accuracy_std": 0.003448668686056631,
+      "precision_mean": 0.8292243239456353,
+      "precision_std": 0.04724684133814476,
+      "recall_mean": 0.8645833333333334,
+      "recall_std": 0.04614595090278477,
+      "f1_mean": 0.8439593237952087,
+      "f1_std": 0.004284840350086655
+    }
+  ]
+}

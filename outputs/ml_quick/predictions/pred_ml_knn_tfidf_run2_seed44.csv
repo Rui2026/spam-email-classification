@@ -1,0 +1,9 @@
+text,y_true,y_pred
+congratulations you have been selected for a reward,1,0
+flight confirmed gate b departure,0,0
+here is the recipe you wanted,0,0
+your invoice is ready please wire transfer,1,0
+you are a winner claim your prize,1,1
+good morning team reminder about standup,0,0
+hot singles in your area chat now,1,1
+the project deadline is next friday,0,0

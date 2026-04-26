@@ -1,0 +1,9 @@
+text,y_true,y_pred
+see you at the gym after work,0,0
+please review the document when you get a chance,0,0
+exclusive deal limited time offer act now,1,1
+you have new voicemail listen now,1,0
+thanks for your help with the assignment,0,0
+congratulations you have been selected for a reward,1,0
+could we reschedule our call to thursday,0,1
+win a free prize now click here immediately,1,1

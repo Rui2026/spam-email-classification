@@ -1,0 +1,32 @@
+{
+  "ml_logistic_regression_tfidf": {
+    "test_accuracy": 0.9728682170542635,
+    "test_precision": 0.8731343283582089,
+    "test_recall": 0.9140625,
+    "test_f1": 0.8931297709923665
+  },
+  "ml_knn_tfidf": {
+    "test_accuracy": 0.9767441860465116,
+    "test_precision": 0.9905660377358491,
+    "test_recall": 0.8203125,
+    "test_f1": 0.8974358974358975
+  },
+  "ml_naive_bayes_tfidf": {
+    "test_accuracy": 0.9718992248062015,
+    "test_precision": 1.0,
+    "test_recall": 0.7734375,
+    "test_f1": 0.8722466960352423
+  },
+  "mlp_tfidf": {
+    "test_accuracy": 0.9718992248062015,
+    "test_precision": 0.8561151079136691,
+    "test_recall": 0.9296875,
+    "test_f1": 0.8913857677902621
+  },
+  "lstm": {
+    "test_accuracy": 0.9554263565891473,
+    "test_precision": 0.7628205128205128,
+    "test_recall": 0.9296875,
+    "test_f1": 0.8380281690140845
+  }
+}

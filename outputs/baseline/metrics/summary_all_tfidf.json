@@ -1,0 +1,65 @@
+{
+  "runs": 3,
+  "rows": [
+    {
+      "model": "ml_logistic_regression_tfidf",
+      "n_runs": 3,
+      "accuracy_mean": 0.9712532299741602,
+      "accuracy_std": 0.0016469701271294554,
+      "precision_mean": 0.8754223868128032,
+      "precision_std": 0.003929639239632358,
+      "recall_mean": 0.8958333333333334,
+      "recall_std": 0.020505228838572424,
+      "f1_mean": 0.8853448026375839,
+      "f1_std": 0.008195807015569496
+    },
+    {
+      "model": "ml_knn_tfidf",
+      "n_runs": 3,
+      "accuracy_mean": 0.9696382428940568,
+      "accuracy_std": 0.0059382352425226504,
+      "precision_mean": 0.9736306174240633,
+      "precision_std": 0.012267079442196344,
+      "recall_mean": 0.7760416666666666,
+      "recall_std": 0.04247267299557315,
+      "f1_mean": 0.8631669315862621,
+      "f1_std": 0.029647171697078804
+    },
+    {
+      "model": "ml_naive_bayes_tfidf",
+      "n_runs": 3,
+      "accuracy_mean": 0.9654392764857881,
+      "accuracy_std": 0.0060427283378131835,
+      "precision_mean": 0.9961240310077519,
+      "precision_std": 0.005481447916174797,
+      "recall_mean": 0.7239583333333334,
+      "recall_std": 0.04525559165880928,
+      "f1_mean": 0.8378286887488584,
+      "f1_std": 0.032417211808669605
+    },
+    {
+      "model": "mlp_tfidf",
+      "n_runs": 3,
+      "accuracy_mean": 0.9722222222222222,
+      "accuracy_std": 0.0012085456675626446,
+      "precision_mean": 0.8768333933362217,
+      "precision_std": 0.014715368974879286,
+      "recall_mean": 0.9036458333333334,
+      "recall_std": 0.02240188871625684,
+      "f1_mean": 0.8896761424408952,
+      "f1_std": 0.005787268852354826
+    },
+    {
+      "model": "lstm",
+      "n_runs": 3,
+      "accuracy_mean": 0.9602713178294574,
+      "accuracy_std": 0.003448668686056631,
+      "precision_mean": 0.8292243239456353,
+      "precision_std": 0.04724684133814476,
+      "recall_mean": 0.8645833333333334,
+      "recall_std": 0.04614595090278477,
+      "f1_mean": 0.8439593237952087,
+      "f1_std": 0.004284840350086655
+    }
+  ]
+}
