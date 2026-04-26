@@ -1,40 +1,40 @@
 # Spam Email Classification Using Multiple Machine Learning Models
 
-课程级文本二分类项目：在相同训练/测试划分下，对比 **Logistic Regression**、**KNN**、**Multinomial Naive Bayes**、**MLP** 与 **LSTM** 在垃圾邮件识别上的表现，并输出指标、混淆矩阵与对比图。
+A course-level text binary classification project: under the same train/test split, compare **Logistic Regression**, **KNN**, **Multinomial Naive Bayes**, **MLP**, and **LSTM** on spam detection, and produce metrics, confusion matrices, and comparison plots.
 
-## 目录结构
+## Project Structure
 
 ```
 spam_email_classification/
 ├── data/
-│   ├── raw/              # 原始 CSV（示例见 emails.csv）
-│   └── processed/        # 预处理后数据（运行后生成）
-├── notebooks/            # 可选：实验性 Jupyter 笔记
+│   ├── raw/              # Raw CSV (sample: emails.csv)
+│   └── processed/        # Preprocessed data (generated at runtime)
+├── notebooks/            # Optional Jupyter notebooks for exploration
 ├── src/
 │   ├── __init__.py
-│   ├── config.py         # 路径与超参数
-│   ├── preprocess.py     # 文本清洗与可选停用词
-│   ├── features.py       # BoW / TF-IDF；LSTM 词表与 padding
-│   ├── ml_models.py      # sklearn 模型构造
+│   ├── config.py         # Paths and hyperparameters
+│   ├── preprocess.py     # Text cleaning + optional stopwords
+│   ├── features.py       # BoW / TF-IDF; LSTM vocab + padding
+│   ├── ml_models.py      # sklearn model constructors
 │   ├── dl_models.py      # PyTorch MLP / LSTM
-│   ├── dataset.py        # torch Dataset 封装
-│   ├── train_ml.py       # 传统 ML 训练与持久化
-│   ├── train_dl.py       # 深度学习训练与最佳权重
-│   ├── evaluate.py       # 指标、混淆矩阵、柱状对比图
-│   └── utils.py          # IO、标签编码、目录创建
-├── models/               # 训练得到的 .pkl / .pt
+│   ├── dataset.py        # torch Dataset wrappers
+│   ├── train_ml.py       # Classical ML training + persistence
+│   ├── train_dl.py       # Deep learning training + best-checkpoint
+│   ├── evaluate.py       # Metrics, confusion matrices, comparison plots
+│   └── utils.py          # IO, label encoding, directory creation
+├── models/               # Trained .pkl / .pt files
 ├── outputs/
-│   ├── figures/          # 混淆矩阵与对比图 PNG
-│   ├── metrics/          # JSON 指标
-│   └── predictions/      # 测试集预测 CSV
-├── main.py               # 统一入口
+│   ├── figures/          # Confusion matrices and comparison PNGs
+│   ├── metrics/          # JSON metrics
+│   └── predictions/      # Test-set prediction CSVs
+├── main.py               # Unified entry point
 ├── requirements.txt
 └── README.md
 ```
 
-## 环境安装
+## Installation
 
-要求 **Python 3.10+**。建议使用 **Python 3.12**（或 3.10/3.11）创建虚拟环境：部分依赖在 **Python 3.14** 上可能尚未完全稳定，容易出现安装耗时或运行时异常。
+Requires **Python 3.10+**. We recommend **Python 3.12** (or 3.10/3.11) for the virtual environment: some dependencies are not yet fully stable on **Python 3.14**, which can cause slow installs or runtime errors.
 
 ```bash
 cd spam_email_classification
@@ -43,28 +43,28 @@ source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-若启用 **停用词**（在 `src/config.py` 中设置 `REMOVE_STOPWORDS = True`），首次运行 NLTK 会自动下载 `stopwords` 语料。
+If **stopword removal** is enabled (set `REMOVE_STOPWORDS = True` in `src/config.py`), NLTK will auto-download the `stopwords` corpus on first run.
 
-### macOS 上 “Python 意外退出” / Matplotlib 卡住
+### macOS "Python quit unexpectedly" / Matplotlib hangs
 
-项目已在 `main.py` 中设置 `MPLCONFIGDIR` 指向项目内目录，并在 `src/evaluate.py` 中强制使用非交互后端 **`Agg`**（`matplotlib.use("Agg")`），避免默认 GUI 后端在部分系统上与字体缓存冲突导致进程崩溃。若仍异常，可尝试用 **Python 3.12** 重新建虚拟环境后再安装依赖。
+`main.py` already sets `MPLCONFIGDIR` to a project-local directory and `src/evaluate.py` forces the non-interactive **`Agg`** backend (`matplotlib.use("Agg")`) to avoid clashes between the default GUI backend and the font cache on some systems. If issues persist, recreate the venv with **Python 3.12** before reinstalling dependencies.
 
-## 数据集格式
+## Dataset Format
 
-CSV 至少包含两列（列名可在 `src/config.py` 中修改，默认为 `text` 与 `label`）：
+The CSV must contain at least two columns (column names are configurable in `src/config.py`; defaults are `text` and `label`):
 
-| 列名   | 说明 |
-|--------|------|
-| `text` | 邮件正文或主题等原始文本 |
-| `label`| `spam` / `ham`，或 `1` / `0`（也支持 `yes/no`、`true/false` 等别名） |
+| Column | Description |
+|--------|-------------|
+| `text` | Email body, subject, or other raw text |
+| `label`| `spam` / `ham`, or `1` / `0` (also accepts aliases like `yes/no`, `true/false`) |
 
-将文件放在 `data/raw/`，或通过 `--data` 指定路径。项目自带小型示例 `data/raw/emails.csv` 便于直接跑通流程。
+Place the file under `data/raw/`, or pass its path via `--data`. The repo includes a tiny sample `data/raw/emails.csv` for quick smoke tests.
 
-### 使用 Kaggle 数据集
+### Using a Kaggle Dataset
 
-支持三种获取方式，**任选其一**。
+There are three options — pick whichever you prefer.
 
-**方式 0 —— `kagglehub`（推荐，免登录配置）：**
+**Option 0 — `kagglehub` (recommended, no token setup needed):**
 
 ```bash
 pip install kagglehub
@@ -73,24 +73,24 @@ python scripts/download_kaggle.py \
     --output data/raw/email_spam.csv
 ```
 
-`scripts/download_kaggle.py` 会：
+`scripts/download_kaggle.py` will:
 
-1. 通过 `kagglehub` 下载到本地缓存（默认 `~/.cache/kagglehub/...`）
-2. 自动在解压目录里找 CSV（多 CSV 会列出来，可用 `--csv-name` 指定）
-3. 调用 `prepare_kaggle.py` 把列名归一化为 `text,label`，写到 `data/raw/email_spam.csv`
+1. Download the dataset to the local cache (default: `~/.cache/kagglehub/...`) via `kagglehub`.
+2. Locate a CSV inside the extracted directory (or list multiple CSVs; specify with `--csv-name` if needed).
+3. Call `prepare_kaggle.py` to normalise the columns to `text,label` and write to `data/raw/email_spam.csv`.
 
-**方式 1 —— Kaggle 官方 CLI（已配置 token）：**
+**Option 1 — Official Kaggle CLI (token configured):**
 
 ```bash
 pip install kaggle
 kaggle datasets download -d uciml/sms-spam-collection-dataset -p data/raw --unzip
 ```
 
-**方式 2 —— 网页下载**：直接从 Kaggle 数据集页面 `Download` 后解压，把 CSV 放到 `data/raw/`。
+**Option 2 — Web download**: download from the dataset page on Kaggle, unzip, and place the CSV under `data/raw/`.
 
-下载后再二选一：
+After downloading, choose one of the following:
 
-A. **转成项目标准格式**（推荐，便于复用）：
+A. **Convert to the project's standard format** (recommended, easier to reuse):
 
    ```bash
    python scripts/prepare_kaggle.py \
@@ -100,16 +100,16 @@ A. **转成项目标准格式**（推荐，便于复用）：
        --dedup
    ```
 
-   脚本会：自动识别 `v1/v2`、`Category/Message` 等常见列名 → 输出含 `text,label` 的标准 CSV，并打印类别分布。
+   The script auto-detects common column names (`v1/v2`, `Category/Message`, etc.) and writes a standardised CSV with `text,label` columns plus a class-distribution log.
 
-   然后照常训练：
+   Then train as usual:
 
    ```bash
    python main.py --mode all --feature tfidf --runs 3 \
        --data data/raw/sms_spam.csv
    ```
 
-B. **不转换，直接用原始列名**（适合一次性试跑）：
+B. **Use the original column names directly** (good for one-off experiments):
 
    ```bash
    python main.py --mode ml --feature tfidf \
@@ -118,92 +118,91 @@ B. **不转换，直接用原始列名**（适合一次性试跑）：
        --encoding latin-1
    ```
 
-   `--text-col` / `--label-col` / `--encoding` 让 `main.py` 直接吃任意列名/编码的 CSV。
+   `--text-col` / `--label-col` / `--encoding` let `main.py` consume any CSV with arbitrary column names or encodings.
 
-## 运行示例
+## Running
 
-在项目根目录（`spam_email_classification/`）执行：
+From the project root (`spam_email_classification/`):
 
 ```bash
-# 仅传统机器学习（LR / KNN / MultinomialNB）
+# Classical ML only (LR / KNN / MultinomialNB)
 python main.py --mode ml --feature tfidf
 
-# 仅深度学习（MLP + LSTM）
+# Deep learning only (MLP + LSTM)
 python main.py --mode dl --feature tfidf
 
-# 全部模型
+# All models
 python main.py --mode all --feature bow
 ```
 
-常用参数：
+Common arguments:
 
-- `--mode`：`ml` | `dl` | `all`
-- `--feature`：`bow` | `tfidf`（作用于 sklearn 与 MLP；LSTM 使用独立词表）
-- `--data`：自定义 CSV 路径（默认 `data/raw/emails.csv`）
-- `--seed`：基础随机种子（默认 42）
-- `--runs N`：用 `seed, seed+1, ...` 重复 N 次实验，自动汇总每个模型 **mean ± std**
-- `--epochs / --batch-size / --lr`：覆写 DL 的训练超参（不传则用 `config.py`）
-- `--text-col / --label-col`：CSV 列名（默认 `text` / `label`，便于直接吃 Kaggle 原文件）
-- `--encoding`：CSV 编码（Kaggle SMS Spam Collection 用 `latin-1`）
-- `--no-class-weight`：关闭 DL 的 class-balanced loss（默认开启，用于消融实验）
-- `--tag NAME`：把所有产物落到 `outputs/<NAME>/` 与 `models/<NAME>/`，避免不同实验互相覆盖；`--tag auto` 用时间戳自动命名
-- `--log-level`：`DEBUG` / `INFO` / `WARNING` / `ERROR`
+- `--mode`: `ml` | `dl` | `all`
+- `--feature`: `bow` | `tfidf` (applies to sklearn models and MLP; LSTM uses its own vocabulary)
+- `--data`: path to the CSV (default: `data/raw/emails.csv`)
+- `--seed`: base random seed (default 42)
+- `--runs N`: repeat the experiment N times with seeds `seed, seed+1, ...`, automatically aggregating per-model **mean ± std**
+- `--epochs / --batch-size / --lr`: override DL hyperparameters (otherwise read from `config.py`)
+- `--text-col / --label-col`: CSV column names (default `text` / `label`; useful for raw Kaggle files)
+- `--encoding`: CSV encoding (use `latin-1` for the Kaggle SMS Spam Collection)
+- `--no-class-weight`: disable class-balanced loss for DL models (default: enabled; useful for ablations)
+- `--tag NAME`: write all artifacts under `outputs/<NAME>/` and `models/<NAME>/` so different experiments don't overwrite each other; `--tag auto` uses a timestamp
+- `--log-level`: `DEBUG` / `INFO` / `WARNING` / `ERROR`
 
-### 实验报告推荐命令
+### Recommended Commands for Reports
 
-不同实验放在不同 `--tag` 子目录下，互不覆盖，方便最后一起汇总：
+Place each experiment under its own `--tag` subdirectory so they don't overwrite each other and can be summarised together later:
 
 ```bash
-# 1) 基线：全部模型 + TF-IDF + 类权重平衡
+# 1) Baseline: all models + TF-IDF + class-balanced loss
 python main.py --mode all --feature tfidf --runs 3 --epochs 15 \
     --data data/raw/email_spam.csv \
     --tag baseline
 
-# 2) 消融：关掉类权重，对照 spam 不平衡的影响
+# 2) Ablation: disable class weighting to study the effect of imbalance
 python main.py --mode dl --feature tfidf --runs 3 --epochs 15 \
     --data data/raw/email_spam.csv \
     --no-class-weight --tag no_class_weight
 
-# 3) 特征对比：BoW vs TF-IDF
+# 3) Feature comparison: BoW vs TF-IDF
 python main.py --mode all --feature bow --runs 3 --epochs 15 \
     --data data/raw/email_spam.csv \
     --tag bow
 
-# 4) 只快速跑传统 ML（秒级，便于反复试参数）
+# 4) Quick classical-ML pass (seconds; handy for parameter sweeps)
 python main.py --mode ml --feature tfidf --runs 5 --seed 42 --tag ml_quick
 ```
 
-不传 `--tag` 时维持原扁平结构（`outputs/figures/...`、`models/...`），适合「最后一次性出报告」的场景；但要注意每次都会**覆盖**前一次的同名产物。
+If you don't pass `--tag`, the original flat structure is used (`outputs/figures/...`, `models/...`). That works for a final one-shot report, but each new run will **overwrite** any previous artifacts with matching names.
 
-### 类不平衡处理
+### Class Imbalance Handling
 
-`abdmental01/email-spam-dedection` 这类数据集中 ham ≈ 88%、spam ≈ 12%。原始 LSTM 在这种分布下，未经处理会陷入「全部预测 ham」的局部解（验证 loss 卡在 ≈ 0.36，正好等于先验交叉熵），导致 spam recall ≈ 0。
+Datasets like `abdmental01/email-spam-dedection` are roughly 88% ham and 12% spam. Without intervention, the LSTM would settle into the trivial "always predict ham" local minimum (validation loss stuck around 0.36, exactly matching the prior cross-entropy), giving spam recall ≈ 0.
 
-项目通过三个机制解决（默认全部开启）：
+The project addresses this with three mechanisms (all enabled by default):
 
-1. **Class-balanced cross-entropy**（`config.USE_CLASS_WEIGHT = True`）：按 `N / (K · n_c)` 给每个类别加权，等价于 sklearn 的 `class_weight='balanced'`。可用 `--no-class-weight` 关闭以做消融。
-2. **梯度裁剪**（`config.GRAD_CLIP_NORM = 5.0`）：`clip_grad_norm_` 防止 LSTM 梯度爆炸。
-3. **双向 LSTM**（`config.LSTM_BIDIRECTIONAL = True`）：拼接末态前/后向隐藏向量，对短文本通常 +1～3% F1。
+1. **Class-balanced cross-entropy** (`config.USE_CLASS_WEIGHT = True`): per-class weight `N / (K · n_c)`, equivalent to sklearn's `class_weight='balanced'`. Disable with `--no-class-weight` for ablations.
+2. **Gradient clipping** (`config.GRAD_CLIP_NORM = 5.0`): `clip_grad_norm_` to prevent LSTM gradient explosions.
+3. **Bidirectional LSTM** (`config.LSTM_BIDIRECTIONAL = True`): concatenate the final forward and backward hidden states; typically +1–3% F1 on short text.
 
-实测在 `email_spam.csv` 上，启用后 LSTM 的 test F1 从 ≈ 0 提升到 0.80+，spam recall ≈ 0.86。
+Empirically on `email_spam.csv`, enabling these lifts the LSTM test F1 from ≈ 0 to 0.80+, with spam recall ≈ 0.86.
 
-## 输出说明
+## Outputs
 
-下表中 `<tag>/` 是可选的 `--tag` 子目录；不传 `--tag` 时所有产物落在扁平的 `outputs/`、`models/` 下。
+`<tag>/` below is the optional `--tag` subdirectory; without `--tag` everything lands in flat `outputs/` and `models/`.
 
-| 路径 | 内容 |
-|------|------|
-| `data/processed/processed.csv` | 原始列 + `clean_text` |
-| `models/<tag>/vectorizer_{bow|tfidf}.pkl` | 文本向量器 |
-| `models/<tag>/{logistic_regression,knn,naive_bayes}_{feature}.pkl` | sklearn 模型 |
-| `models/<tag>/mlp_{feature}.pt` | MLP 检查点 |
-| `models/<tag>/lstm.pt` | LSTM 检查点（含词表） |
-| `outputs/<tag>/metrics/metrics_{mode}_{feature}_run*_seed*.json` | **每次 run** 的逐模型指标 |
-| `outputs/<tag>/metrics/summary_{mode}_{feature}.csv` | 汇总表（多 run 时自动给出 `*_mean / *_std`，可直接贴报告） |
-| `outputs/<tag>/metrics/summary_{mode}_{feature}.json` | 同上的 JSON 版 |
-| `outputs/<tag>/metrics/label_mapping.json` | 标签到 0/1 的映射 |
-| `outputs/<tag>/figures/cm_*.png` | 各模型混淆矩阵 |
-| `outputs/<tag>/figures/curves_{mlp,lstm}_*.png` | **训练/验证 loss 曲线** |
-| `outputs/<tag>/figures/model_comparison_*.png` | 多模型指标柱状对比 |
-| `outputs/<tag>/predictions/*.csv` | 测试集预测结果 |
-
+| Path | Contents |
+|------|----------|
+| `data/processed/processed.csv` | Original columns plus `clean_text` |
+| `models/<tag>/vectorizer_{bow|tfidf}.pkl` | Text vectoriser |
+| `models/<tag>/{logistic_regression,knn,naive_bayes}_{feature}.pkl` | sklearn models |
+| `models/<tag>/mlp_{feature}.pt` | MLP checkpoint |
+| `models/<tag>/lstm.pt` | LSTM checkpoint (includes vocab) |
+| `outputs/<tag>/metrics/metrics_{mode}_{feature}_run*_seed*.json` | Per-run, per-model metrics |
+| `outputs/<tag>/metrics/summary_{mode}_{feature}.csv` | Summary table (with `*_mean / *_std` columns when multiple runs are used; ready to paste into a report) |
+| `outputs/<tag>/metrics/summary_{mode}_{feature}.json` | JSON version of the summary |
+| `outputs/<tag>/metrics/label_mapping.json` | Mapping from raw labels to 0/1 |
+| `outputs/<tag>/figures/cm_*.png` | Confusion matrices per model |
+| `outputs/<tag>/figures/curves_{mlp,lstm}_*.png` | **Training/validation loss curves** |
+| `outputs/<tag>/figures/model_comparison_*.png` | Bar chart comparing models on accuracy / precision / recall / F1 |
+| `outputs/<tag>/predictions/*.csv` | Test-set predictions |
